@@ -911,7 +911,7 @@ void setup() {
     Coop_Door_Controller_setup();
     Dispense_Food_Water_setup();
     Egg_Detect_Weigh_Record_setup();
-    temperature_setup;
+    temperature_setup();
     
 }
 
@@ -921,6 +921,6 @@ void loop() {
     Coop_Door_Controller_loop();
     Dispense_Food_Water_loop();
     Egg_Detect_Weigh_Record_loop();
-    temperature_loop;
+    temperature_loop();
 }
 
