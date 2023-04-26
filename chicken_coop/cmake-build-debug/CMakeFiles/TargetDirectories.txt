@@ -1,0 +1,3 @@
+/Users/leonbouramia/CLionProjects/chicken_coop/cmake-build-debug/CMakeFiles/chicken_coop.dir
+/Users/leonbouramia/CLionProjects/chicken_coop/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/leonbouramia/CLionProjects/chicken_coop/cmake-build-debug/CMakeFiles/rebuild_cache.dir
