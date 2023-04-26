@@ -2,6 +2,8 @@
 
 Welcome to the delightful Arduino-Powered Chicken Coop project! This joyful and easy-to-use solution will make caring for your chickens a breeze while bringing a smile to your face. This project is perfect for hobbyists and small-scale farmers who want to ensure their chickens receive the best care and living conditions possible. Our Arduino-based system offers an affordable and efficient way to manage your chicken coop, leading to happier chickens and a more enjoyable experience for you.
 
+The main is a compilation of the various seperate files representing the chicken coop. Makes it easier to upload to the Arduino. 
+
 ## 🌈 Features
 
 1. **Consistent Light Control**: Brightens your chickens' day by providing a consistent number of hours of light daily, no matter the weather. This promotes their well-being and encourages regular egg-laying patterns.
