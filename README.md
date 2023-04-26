@@ -31,6 +31,12 @@ To embark on your exciting journey with the Arduino-Powered Chicken Coop project
 
 We welcome and appreciate contributions to this project! If you have any bright ideas for improvements or new features, please open an issue to discuss them with our enthusiastic community. You can also contribute by submitting pull requests with your changes.
 
+🛠️ Potential Issues to fix:
+- Humidity fan control operates independently of the temp control. 
+- In a worst case, the fan may cause the ac to run longer if it blows cold air outside into a hot environment.
+
+Solution: Integrate the humidity fan control into the temperature control so the temperature is checked before the humidity fan is on, allowing the ac to get a chance to drop the %RH before the humidity fan can turn on if it is hot, preventing them from working against each other. 
+
 ## 📜 License
 
 This project is licensed under the [MIT License](LICENSE). Please see the [LICENSE](LICENSE) file for details.
