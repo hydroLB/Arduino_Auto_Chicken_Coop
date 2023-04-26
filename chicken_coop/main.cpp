@@ -21,6 +21,31 @@
 #include <RTClib.h> // Include the RTClib library
 #include "table_generator.h"
 
+//Here is the updated list of components organized from most expensive to least expensive, including the new items:
+
+//1. Arduino Mega 2560: $38.00 (estimated, price may vary)
+//2. Adafruit Motor Shield v2 (1): $22.50
+//3. Linear actuator or a motor with a gear system for opening and closing the door: $30.00 (estimated)
+//4. IoT Power Relay: $30.00 (estimated)
+//5. Load Cell (1): $9.99
+//6. Jumper Wires - Assorted: $9.99
+//7. LED strip or bulb with a controllable switch (relay or MOSFET): $10.00 (estimated)
+//8. Breadboard (1): $6.99
+//9. HX711 Load Cell Amplifier (1): $6.99
+//10. Peristaltic pump (1): $7.00
+//11. Optical Encoder: $7.00 (estimated)
+//12. Break Beam Sensor (1): $4.99
+//13. Breadboard (1): $4.99
+//14. Servo motor (1): $5.00
+//15. RTC DS1307 Real-time clock module (1): $5.00
+//16. TSL2591 light sensor (1): $5.00
+//17. HX711 load cell amplifier and weight sensor (2): $5.00 each
+//18. DHT Humidity Sensor (1): $4.00 (estimated, based on the price of RTC DS1307)
+//19. Jumper wires (approx. 10): $3.99
+//20. Jumper wires (various): $3.00 for a set of 120
+//21. DS18B20 temperature sensors (3): $2.99 each
+//22. 4.7k ohm resistor (3): $0.10 each
+
 
 ////////////////////////////////////// CONSISTENT LIGHT CONTROLLER START //////////////////////////
 
