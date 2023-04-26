@@ -75,7 +75,7 @@ unsigned long calculateTimeUntilClose() {
     int hour = now.hour(); // Get the current hour
     int minute = now.minute(); // Get the current minute
     // Calculate the time until the door close time in milliseconds
-    return (CLOSE_HOUR - hour) * 60L * 60L * 1000L - minute * 60L * 1000L;
+    return (CLOSE_HOUR - hour) * 60 * 60 * 1000 - minute * 60 * 1000;
 }
 
 unsigned long calculateTimeUntilOpen() {
@@ -85,10 +85,10 @@ unsigned long calculateTimeUntilOpen() {
 
     // Calculate the time until the next door open time in milliseconds
     if (hour >= CLOSE_HOUR) {
-        return (OPEN_HOUR + 24 - hour) * 60L * 60L * 1000L - minute * 60L * 1000L;
+        return (OPEN_HOUR + 24 - hour) * 60 * 60 * 1000 - minute * 60 * 1000;
     } else {
-        return (OPEN_HOUR - hour) * 60L * 60L * 1000L - minute * 60L * 1000L;
-    }
+        return (OPEN_HOUR - hour) * 60 * 60 * 1000 - minute * 60 * 1000;
+    
 }
 void openDoor() {
     // Set the servo position to the open state (e.g., 90 degrees)
