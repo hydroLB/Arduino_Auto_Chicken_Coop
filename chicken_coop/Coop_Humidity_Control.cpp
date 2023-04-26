@@ -10,7 +10,7 @@
 #define RELAY_PIN 3              // Relay pin for the fan
 #define HUMIDITY_THRESHOLD 65.0  // Humidity threshold for turning the fan on
 #define FAN_ON_TIME 1200000      // 20 minutes on time then
-#define FAN_OFF_TIME 600000      // 10 minutes off time then ^^^^^ for interval time vvvvvvvv
+#define FAN_OFF_TIME 600000      // 10 minutes off time then ^^^^^ for interval time 
 #define INTERVAL_6H 21600000     // 6 hours
 #define INTERVAL_24H 86400000    // 24 hours
 
