@@ -910,6 +910,7 @@ void setup() {
     Consistent_Light_Controller_setup();
     Coop_Door_Controller_setup();
     Dispense_Food_Water_setup();
+    Coop_Humidity_Control_setup();
     Egg_Detect_Weigh_Record_setup();
     temperature_setup();
     
@@ -920,6 +921,7 @@ void loop() {
     Consistent_Light_Controller_loop();
     Coop_Door_Controller_loop();
     Dispense_Food_Water_loop();
+    Coop_Humidity_Control_loop();
     Egg_Detect_Weigh_Record_loop();
     temperature_loop();
 }
