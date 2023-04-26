@@ -2,11 +2,9 @@
 
 Welcome to the delightful Arduino-Powered Chicken Coop project! This joyful and easy-to-use solution will make caring for your chickens a breeze while bringing a smile to your face. This project is perfect for hobbyists and small-scale farmers who want to ensure their chickens receive the best care and living conditions possible. Our Arduino-based system offers an affordable and efficient way to manage your chicken coop, leading to happier chickens and a more enjoyable experience for you.
 
-The main is a compilation of the various seperate files representing the chicken coop. Makes it easier to upload to the Arduino. 
+The 'main.cpp' is a compilation of the various seperate files representing the chicken coop. Makes it easier to upload to the Arduino. 
 
 🛍️ Items Required:
-//Here is the updated list of components organized from most expensive to least expensive, including the new items:
-
 1. Arduino Mega 2560: $38.00 (estimated, price may vary)
 2. Adafruit Motor Shield v2 (1): $22.50
 3. Linear actuator or a servo motor with a gear system for opening and closing the door: $30.00 (estimated)
@@ -29,8 +27,7 @@ The main is a compilation of the various seperate files representing the chicken
 21. DS18B20 temperature sensors (3): $2.99 each
 22. 4.7k ohm resistor (3): $0.10 each
 
-## 💰Total cost💰
-    = ~ $250
+## 💰Total cost = ~ $250 ##
 
 ## 🌈 Features
 
@@ -58,7 +55,6 @@ To embark on your exciting journey with the Arduino-Powered Chicken Coop project
 6. Power on your Arduino board and enjoy the automated chicken coop experience!
 
 
-
 ## 💡 Contributing
 
 We welcome and appreciate contributions to this project! If you have any bright ideas for improvements or new features, please open an issue to discuss them with our enthusiastic community. You can also contribute by submitting pull requests with your changes.
@@ -76,4 +72,3 @@ This project is licensed under the [MIT License](LICENSE). Please see the [LICEN
 ## 🎉 Acknowledgements
 
 Thank you for considering the Arduino-Powered Chicken Coop project for your home or farm. We hope it brings joy and efficiency to you and your chickens. Happy farming! 🐔🌻🌞
-
