@@ -39,8 +39,6 @@
 //special for database
 #include "table_generator.h"
 
-
-
 // Constants
 #define LOADCELL_DOUT_PIN 6
 #define LOADCELL_SCK_PIN 7
@@ -77,6 +75,7 @@ Twilio twilio(client, account_sid, auth_token);
 // Variables
 int egg = 0;
 int egg_form_num = 0;
+int certain_egg_num = 24; //how many eggs to count before a text and counter reset
 HX711 scale(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
 float eggWeight = 0;
 
@@ -110,9 +109,10 @@ void setup() {
 void loop() {
     // Check if an egg is detected by the break beam sensor
     if (eggDetected()) {
-        Serial.println("Egg detected! Waiting before moving conveyor.");
-        // Egg counter
+        Serial.println("Egg detected!");
+        //Local egg counter that will reset when eggs reach certain_egg_num
         egg++;
+        //Global egg counter to ensure total number of eggs in form is accurate
         egg_form_num++;
 
         // Read the weight of the egg after 1 second
@@ -138,7 +138,7 @@ void loop() {
     }
 
     // Amount of eggs before notification
-    if (egg == 24) {
+    if (egg == certain_egg_num) {
         // Send a text message using the Twilio API
         twilio.sendSMS(twilio_number, recipient_number, "Come get the eggs!");
         Serial.println("Text message sent.");
