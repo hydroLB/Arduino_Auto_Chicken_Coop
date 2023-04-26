@@ -76,6 +76,7 @@ Twilio twilio(client, account_sid, auth_token);
 int egg = 0;
 int egg_form_num = 0;
 int certain_egg_num = 24; //how many eggs to count before a text and counter reset
+int beam_interval_sleep = 300 // how many miliseconds the cpu will wait before checking the break beam 
 HX711 scale(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
 float eggWeight = 0;
 
@@ -134,17 +135,16 @@ void loop() {
 
         // Insert egg data into the database
         insertIntoTable("Egg_Table", eggData);
+        
+        // Amount of eggs before notification
+        if (egg == certain_egg_num) {
+            // Send a text message using the Twilio API
+            twilio.sendSMS(twilio_number, recipient_number, "Come get the eggs!");
+            Serial.println("Text message sent.");
+            egg = 0;
+            }
 
     }
-
-    // Amount of eggs before notification
-    if (egg == certain_egg_num) {
-        // Send a text message using the Twilio API
-        twilio.sendSMS(twilio_number, recipient_number, "Come get the eggs!");
-        Serial.println("Text message sent.");
-        egg = 0;
-    }
-
     // Sleep for a short duration to ensure the sensor sees the egg but CPU gets a break
-    delay(300);
+    delay(beam_interval_sleep);
 }
