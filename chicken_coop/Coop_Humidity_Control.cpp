@@ -56,6 +56,8 @@ void loop() {
         delay(60000); // Check humidity every minute when the fan is not active
     }
 }
+
+
 float readHumidity() {
     float humidity1 = dht.readHumidity();
     float humidity2 = dht2.readHumidity();
