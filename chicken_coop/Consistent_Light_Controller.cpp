@@ -28,7 +28,7 @@
 const int sunlightThreshold = 50;        // Define the sunlight threshold value
 const int lightPin = 13;                 // Assign the digital pin 13 to the light (relay or LED)
 const int interval = 300000;             // 5 minutes in milliseconds for sampling interval
-const long sixteenHours = 57600000;      // 16 hours in milliseconds for total desired light duration
+const long total_light_duration = 57600000;      // 16 hours in milliseconds for total desired light duration
 
 // Variables
 unsigned long startTime;
@@ -75,7 +75,7 @@ void loop() {
     // Calculate the duration of daylight in milliseconds
     unsigned long daylightDuration = sunsetTime.unixtime() - sunriseTime.unixtime();
     // Calculate the required light duration in milliseconds to complete 16 hours
-    unsigned long lightDuration = sixteenHours - daylightDuration;
+    unsigned long lightDuration = total_light_duration - daylightDuration;
 
     // If the light duration is greater than zero, turn the
     // light on for the remaining duration to finish the 16 hours
