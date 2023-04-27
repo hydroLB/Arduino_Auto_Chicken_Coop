@@ -1,110 +1,111 @@
-#include <RTClib.h> // Include the RTClib library for real-time clock functionality
-#include <Servo.h> // Include the Servo library for controlling servo motors
-#include <SoftwareSerial.h>
-#include <HC05.h>
+#include <RTClib.h>
+#include <Servo.h>
 
-// Include table_generator.h if it contains the function declarations for createTable and insertIntoTable
-#include "table_generator.h"
+// Constants for door opening and closing hours
+const int OPEN_HOUR = 7;
+const int CLOSE_HOUR = 19;
 
-// Define the pin used to control the servo motor
-const int SERVO_PIN = 9; // Define the pin connected to the servo motor (pin 9)
+// Servo pin
+const int SERVO_PIN = 9;
 
-// Define the time range during which the door should be open
-const int OPEN_HOUR = 9; // Define the hour when the door should open (9:00)
-const int CLOSE_HOUR = 17; // Define the hour when the door should close (17:00)
-
-// Create instances of the Servo and RTClib libraries
-Servo doorServo; // Create an instance of the Servo class for controlling the door servo motor
-RTC_DS1307 rtc; // Create an instance of the RTC_DS1307 class for real-time clock functionality
+RTC_DS1307 rtc; // RTC instance
+Servo doorServo; // Servo instance
 
 void setup() {
-    initializeServoAndRTC(); // Initialize the servo motor and RTC modules
-    closeDoor(); // Call the closeDoor function to set the servo position to the closed state
+  Serial.begin(9600);
+  doorServo.attach(SERVO_PIN);
+  createTable("exceptions");
+  createTable("door_logging");
+    
 
-    // Connect to the database and create the tables
-    createTable("exceptions");
-    createTable("data_logging");
+  if (!rtc.begin()) { // Initialize RTC
+    Serial.println("Couldn't find RTC");
+    while (1); // Halt execution if RTC is not found
+  }
+
+  if (!rtc.isrunning()) { // Check if RTC is running
+    Serial.println("RTC is not running!");
+    // Handle RTC not running exception here
+  }
+
+  controlDoor("close"); // Close the door by default
 }
+
 void loop() {
-    if (isRTCWorking()) { // Check if RTC is working properly
-        if (isDoorOpenTime()) { // Check if it's time to open the door
-            openDoorForScheduledTime(); // Open the door and wait until the scheduled close time
-        } else {
-            closeDoorAndWaitUntilNextOpenTime(); // Close the door and wait until the next scheduled open time
-        }
-    } else {
-        // Handle RTC error
-    }
+  if (isDoorOpenTime()) { // Check if it's time to open the door
+    controlDoor("open"); // Open the door
+    waitForCloseTime(); // Wait until the close time
+  } else {
+    controlDoor("close");; // Close the door
+    waitForOpenTime(); // Wait until the next open time
+  }
 }
 
-void initializeServoAndRTC() {
-    doorServo.attach(SERVO_PIN); // Attach the servo motor instance to the specified pin (pin 9)
+void controlDoor(String action) {
+  DateTime now = rtc.now(); // Get the current date and time from the RTC
+  int hour = now.hour(); // Get the current hour
+  int minute = now.minute(); // Get the current minute
 
-    if (!rtc.begin()) {
-        // Handle RTC initialization error
-        while (1); // Halt the program, as the RTC is not functioning
-    }
+  if (action == "open") {
+    doorServo.write(90); // Set the servo position to the open state (e.g., 90 degrees)
+  } else if (action == "close") {
+    doorServo.write(0); // Set the servo position to the closed state (e.g., 0 degrees)
+  } else {
+    String data = "Invalid action. Use 'open' or 'close'.";
+    Serial.println(data);
+    insertintoTable("exceptions", data);
+    return;
+  }
+
+  String data = "Door " + action + "ed at " + String(hour) + ":" + String(minute); // Include the current time in the log message
+  Serial.println(data); // Log the door event
+  insertintoTable("door_logging", data);
 }
 
-bool isRTCWorking() {
-    return !rtc.lostPower(); // Return true if RTC has not lost power, otherwise return false
-}
 
 bool isDoorOpenTime() {
-    DateTime now = rtc.now(); // Get the current date and time from the RTC
-    int hour = now.hour(); // Get the current hour
+  DateTime now = rtc.now(); // Get the current date and time from the RTC
+  int hour = now.hour(); // Get the current hour
 
-    // Return true if the current hour is within the open time range, otherwise return false
-    return hour >= OPEN_HOUR && hour < CLOSE_HOUR;
+  // Return true if the current hour is within the open time range, otherwise return false
+  return hour >= OPEN_HOUR && hour < CLOSE_HOUR;
 }
 
-void openDoorForScheduledTime() {
-    openDoor(); // Call the openDoor function to set the servo position to the open state
-    unsigned long timeUntilClose = calculateTimeUntilClose(); // Calculate the time until the door close time
-    delay(timeUntilClose); // Wait until the door close time
+void waitForOpenTime() {
+  DateTime now = rtc.now(); // Get the current date and time from the RTC
+  int hour = now.hour(); // Get the current hour
+  int minute = now.minute(); // Get the current minute
+  int secondsToOpen;
+
+  // Check if the current hour is greater than or equal to the CLOSE_HOUR
+  // If true, then the door will open on the next day
+if (hour >= CLOSE_HOUR) {
+  // Calculate the remaining seconds until the door opens the next day
+  // by finding the difference between 24 hours (end of the day) and the current hour, adding the OPEN_HOUR,
+  // then converting the result to seconds and subtracting the elapsed seconds in the current minute
+  secondsToOpen = (24 - hour + OPEN_HOUR) * 60 * 60 - minute * 60;
+} else {
+  // Calculate the remaining seconds until the door opens on the same day
+  // by finding the difference between OPEN_HOUR and the current hour,
+  // then converting the result to seconds and subtracting the elapsed seconds in the current minute
+  secondsToOpen = (OPEN_HOUR - hour) * 60 * 60 - minute * 60;
 }
 
-void closeDoorAndWaitUntilNextOpenTime() {
-    closeDoor(); // Call the closeDoor function to set the servo position to the closed state
-    unsigned long timeUntilOpen = calculateTimeUntilOpen(); // Calculate the time until the next door open time
-    delay(timeUntilOpen); // Wait until the next door open time
+
+  // Wait until the next door open time
+  delay(secondsToOpen * 1000UL);
 }
 
-unsigned long calculateTimeUntilClose() {
-    DateTime now = rtc.now(); // Get the current date and time from the RTC
-    int hour = now.hour(); // Get the current hour
-    int minute = now.minute(); // Get the current minute
-    // Calculate the time until the door close time in milliseconds
-    return (CLOSE_HOUR - hour) * 60 * 60 * 1000 - minute * 60 * 1000;
+void waitForCloseTime() {
+  DateTime now = rtc.now(); // Get the current date and time from the RTC
+  int hour = now.hour(); // Get the current hour
+  int minute = now.minute(); // Get the current minute
+  // Calculate the remaining seconds until the door closes
+  // by finding the difference between CLOSE_HOUR and the current hour,
+  // then converting the result to seconds and subtracting the elapsed seconds in the current minute
+  int secondsToClose = (CLOSE_HOUR - hour) * 60 * 60 - minute * 60;
+
+
+  // Wait until the door close time
+  delay(secondsToClose * 1000UL);
 }
-
-unsigned long calculateTimeUntilOpen() {
-    DateTime now = rtc.now(); // Get the current date and time from the RTC
-    int hour = now.hour(); // Get the current hour
-    int minute = now.minute(); // Get the current minute
-
-    // Calculate the time until the next door open time in milliseconds
-    if (hour >= CLOSE_HOUR) {
-        return (OPEN_HOUR + 24 - hour) * 60 * 60 * 1000 - minute * 60 * 1000;
-    } else {
-        return (OPEN_HOUR - hour) * 60 * 60 * 1000 - minute * 60 * 1000;
-    
-}
-void openDoor() {
-    // Set the servo position to the open state (e.g., 90 degrees)
-    doorServo.write(90);
-
-    // Log the door opening event
-    String data = "Door opened";
-    insertIntoTable("data_logging", data);
-}
-
-void closeDoor() {
-    // Set the servo position to the closed state (e.g., 0 degrees)
-    doorServo.write(0);
-
-    // Log the door closing event
-    String data = "Door closed";
-    insertIntoTable("data_logging", data);
-}
-
