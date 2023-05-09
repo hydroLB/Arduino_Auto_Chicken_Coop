@@ -59,7 +59,7 @@ To embark on your exciting journey with the Arduino-Powered Chicken Coop project
 
 We welcome and appreciate contributions to this project! If you have any bright ideas for improvements or new features, please open an issue to discuss them with our enthusiastic community. You can also contribute by submitting pull requests with your changes.
 
-## 🛠️ Potential Issues to fix:
+## 🛠️ Potential Issues:
 - Humidity fan control operates independently of the temp control. 
 - In a worst case, the fan may cause the ac to run longer if it blows cold air outside into a hot environment.
 
@@ -71,4 +71,4 @@ This project is licensed under the MIT License.
 
 ## 🎉 Acknowledgements
 
-Thank you for considering the Arduino-Powered Chicken Coop project for your home or farm. We hope it brings joy and efficiency to you and your chickens. Happy farming! 
+Thank you for considering the Arduino-Powered Chicken Coop project for your home/farm. Happy farming! 
