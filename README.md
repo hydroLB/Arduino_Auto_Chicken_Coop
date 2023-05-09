@@ -1,4 +1,4 @@
-# Arduino-Powered Chicken Coop 🐔🥚🌟
+# Arduino-Powered Chicken Coop 🐔
 
 Welcome to the delightful Arduino-Powered Chicken Coop project! This joyful and easy-to-use solution will make caring for your chickens a breeze while bringing a smile to your face. This project is perfect for hobbyists and small-scale farmers who want to ensure their chickens receive the best care and living conditions possible. Our Arduino-based system offers an affordable and efficient way to manage your chicken coop, leading to happier chickens and a more enjoyable experience for you.
 
@@ -67,8 +67,8 @@ Solution: Integrate the humidity fan control into the temperature control so the
 
 ## 📜 License
 
-This project is licensed under the [MIT License](LICENSE). Please see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License].
 
 ## 🎉 Acknowledgements
 
-Thank you for considering the Arduino-Powered Chicken Coop project for your home or farm. We hope it brings joy and efficiency to you and your chickens. Happy farming! 🐔🌻🌞
+Thank you for considering the Arduino-Powered Chicken Coop project for your home or farm. We hope it brings joy and efficiency to you and your chickens. Happy farming! 
