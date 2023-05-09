@@ -4,7 +4,7 @@ Welcome to the delightful Arduino-Powered Chicken Coop project! This joyful and 
 
 The `main.cpp` is a compilation of the various seperate files representing the chicken coop. Makes it easier to upload to the Arduino. 
 
-##Items Required: ##
+#Items Required: #
 1. Arduino Mega 2560: $38.00 (estimated, price may vary)
 2. Adafruit Motor Shield v2 (1): $22.50
 3. Linear actuator or a servo motor with a gear system for opening and closing the door: $30.00 (estimated)
