@@ -1,6 +1,6 @@
 # Arduino-Powered Chicken Coop 🐔
 
-Welcome to the delightful Arduino-Powered Chicken Coop project! This joyful and easy-to-use solution will make caring for your chickens a breeze while bringing a smile to your face. This project is perfect for hobbyists and small-scale farmers who want to ensure their chickens receive the best care and living conditions possible. Our Arduino-based system offers an affordable and efficient way to manage your chicken coop, leading to happier chickens and a more enjoyable experience for you.
+Welcome to the Arduino-Powered automatic Chicken Coop project! This project is perfect for hobbyists and small-scale farmers who want to ensure their chickens receive the best care and living conditions possible while inputting minimal continued effort into raising them. Our Arduino-based system offers an affordable and efficient way to manage your chicken coop, leading to happier chickens and a more enjoyable experience for you.
 
 The `main.cpp` is a compilation of the various seperate files representing the chicken coop. Makes it easier to upload to the Arduino. 
 
