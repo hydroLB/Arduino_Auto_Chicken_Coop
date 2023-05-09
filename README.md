@@ -49,9 +49,8 @@ To embark on your exciting journey with the Arduino-Powered Chicken Coop project
 
 1. Clone this repository to your local machine.
 2. Install the necessary Arduino libraries and dependencies.
-3. Customize the settings in each file
-4.  to suit your specific coop requirements.
-5. Upload the code to your Arduino-compatible board.
+3. Customize the settings in each file to suit your specific coop requirements.
+5. Upload the code, no folders, to your Arduino-compatible board.
 6. Connect the required sensors, components, etc to your board.
 7. Power on your Arduino board and enjoy!
 
