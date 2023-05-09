@@ -22,6 +22,11 @@
 
 
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "LoopDoesntUseConditionVariableInspection"
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
+#pragma ide diagnostic ignored "UnusedLocalVariable"
 #VARIABLES (to be modified to values suited to the user):
 
 // LIGHT CONTROLLER CONSTANTS
@@ -94,15 +99,15 @@ const float waterAmount = 50.0;     // define the amount of water to dispense in
 const float foodRemainingThreshold = 0.1;  // define the threshold for remaining food
 const float waterRemainingThreshold = 0.1; // define the threshold for remaining water
 
-String food_table = 'food_dispensing_log';
-String water_table = 'water_dispensing_log';
+String food_table = "food_dispensing_log";
+String water_table = "water_dispensing_log";
 
 enum WeightSensorType {
     FOOD_SENSOR,
     WATER_SENSOR
 };
 
-//TEMPERATURE CONTTROL
+//TEMPERATURE CONTROL
 // Define the digital input pins for the temperature sensors
 const int TEMPERATURE_SENSOR_1_PIN = 2;
 const int TEMPERATURE_SENSOR_2_PIN = 3;
@@ -153,7 +158,7 @@ const char* recipient_number = "recipient_phone_number"; // the recipient's phon
 int egg = 0;
 int egg_form_num = 0;
 int certain_egg_num = 24; // how many eggs to count before a text is sent and counter is reset
-int beam_interval_sleep = 300; // how many miliseconds the cpu will wait before checking the break beam again 
+int beam_interval_sleep = 300; // how many milliseconds the cpu will wait before checking the break beam again
 HX711 scale(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
 float eggWeight = 0; // initialization *dont touch*
 int weigh_egg_after_detect_delay = 1000; // Delay before reading the weight of the egg
@@ -190,8 +195,8 @@ void turnLightOn(unsigned long duration) {
 // Function to wait until it's 5:00am
 void waitForNextMorning() {
     while (true) {
-        DateTime now = rtc.now();            // Get the current time from the RTC
-        if (now.hour() == 5) {
+        DateTime local_now = rtc.now();            // Get the current time from the RTC
+        if (local_now.hour() == 5) {
             break;                             // If it's 5:00am, exit the loop
         }
         delay(wait_until_next_morning_loop_delay); 
@@ -437,6 +442,9 @@ float getWeight(WeightSensorType type) {
                 break;
             }
             break;
+        default:
+            Serial.println("Error: Invalid weight sensor type");
+            break;
     }
 
     Serial.print(weight);  // Print the measured weight
@@ -679,7 +687,7 @@ void temperature_loop() {
 
 // Get the current date and time as a string
 
-    //logs only occassanily (delay*val equality check, (180 times of 20 second delay= 3600 seconds= 1 hour ))
+    //logs only occasionally (delay*val equality check, (180 times of 20-second delay= 3600 seconds= 1 hour ))
     if (val == 180) {
 
         String tableName = "temperature_log";
@@ -687,7 +695,7 @@ void temperature_loop() {
 
         String data = "Temperature: ";
 
-        data.concat(averageTemperatureF);
+        data += String(averageTemperatureF);
 
         insertIntoTable(tableName,data);
 
@@ -724,4 +732,3 @@ void loop() {
     Egg_Detect_Weigh_Record_loop();
     temperature_loop();
 }
-
