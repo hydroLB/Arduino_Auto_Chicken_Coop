@@ -35,13 +35,13 @@ The `All_in_One_Main.cpp` is a compilation of the various separate files represe
 
 2. **Automated Door Control**: Automate the opening and closing of the coop door on a predefined schedule, ensuring your chickens can safely roost at night and freely explore during the day.
 
-3. **Humidity Control**: Keep an eye on humidity levels and turns on a small fan when needed, providing a cozy and healthy living environment for your feathered friends.
+3. **Humidity Control**: Keep an eye on humidity levels and turns on a small fan when needed.
 
-4. **Food and Water Dispensing**: Using a weight scale, a DC motor, and a peristaltic pump to dispense food and water automatically. This guarantees that your chickens always have access to fresh food and clean water, keeping them happy and content.
+4. **Food and Water Dispensing**: Use a weight scale, a DC motor, and a peristaltic pump to both dispense food and water automatically. This guarantees that your chickens always have access to fresh food and clean water, keeping them happy and content.
 
-5. **Egg Detection, Weighing, and Recording**: Utilizing a break beam sensor and a scale to detect, count, and weigh eggs as they are laid. This fantastic feature allows you to monitor egg production and spot potential issues early.
+5. **Egg Detection, Weighing, and Recording**: Utilizing a break beam sensor and a scale to detect, count, and weigh eggs as they are laid. This feature allows you to monitor egg production and spot potential issues early on.
 
-6. **Temperature Control**: Ensures that your chickens stay comfortable and healthy by maintaining an ideal temperature inside the coop. It controls a heater and air conditioning unit through IoT power relays, making your coop a cozy haven, regardless of the weather outside.
+6. **Temperature Control**: Ensures that your chickens stay comfortable and healthy by maintaining an ideal temperature inside the coop. It controls a heater and air conditioning unit through IoT power relays, making your coop always cozy, regardless of the weather outside.
 
 ## 🚀 Getting Started
 
