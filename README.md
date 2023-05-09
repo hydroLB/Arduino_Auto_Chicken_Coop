@@ -67,7 +67,7 @@ Solution: Integrate the humidity fan control into the temperature control so the
 
 ## 📜 License
 
-This project is licensed under the [MIT License].
+This project is licensed under the MIT License.
 
 ## 🎉 Acknowledgements
 
