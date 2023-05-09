@@ -56,7 +56,7 @@ To embark on your exciting journey with the Arduino-Powered Chicken Coop project
 
 ## 💡 Contributing
 
-We welcome and appreciate contributions to this project! If you have any bright ideas for improvements or new features, please open an issue to discuss them with our enthusiastic community. You can also contribute by submitting pull requests with your changes.
+We welcome and appreciate contributions to this project! If you have any bright ideas for improvements or new features, please open an issue to discuss. You can also contribute by submitting pull requests with your changes.
 
 ## 🛠️ Potential Issues:
 - Humidity fan control operates independently of the temp control. 
