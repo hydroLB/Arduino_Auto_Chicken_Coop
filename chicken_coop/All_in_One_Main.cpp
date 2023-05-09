@@ -25,29 +25,36 @@
 #VARIABLES (to be modified to values suited to the user):
 
 // LIGHT CONTROLLER CONSTANTS
-const int sunlightThreshold = 50;        // Define the sunlight threshold value
-const int lightPin = 13;                 // Assign the digital pin 13 to the light (relay or LED)
-const int interval = 300000;             // 5 minutes in milliseconds for sampling interval
-const long sixteenHours = 57600000;      // 16 hours in milliseconds for total desired light duration
+const int sunlightThreshold = 50;   // Define the sunlight threshold value
+const int lightPin = 13;            // Assign the digital pin 13 to the light (relay or LED)
+const int interval = 300000;        // 5 minutes in milliseconds for sampling interval
+const long sixteenHours = 57600000; // 16 hours in milliseconds for total desired light duration
 // LIGHT CONTROLLER VARIABLES
-unsigned long startTime;         //initialization *dont touch*
-unsigned long lightOnTime;       //initialization *dont touch*
-boolean lightOn = false;         //default is false
+unsigned long startTime;            // initialization *dont touch*
+unsigned long lightOnTime;          // initialization *dont touch*
+boolean lightOn = false;            // default is false
+
+wait_until_next_morning_loop_delay = 60000;  // Check the time every minute (60000 milliseconds)
+int samples = 30; // how many light samples to average before checking it against threshold
 
 // Objects
 RTC_DS1307 rtc; // Create RTC object for real-time clock for all of them //initialization *dont touch*
-
 Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591); // Create light sensor object 
 
 //DOOR CONTROLLER CONSTANTS
+
 // Define the pin used to control the servo motor
-const int SERVO_PIN = 9; // Define the pin connected to the servo motor (pin 9)
+const int SERVO_PIN = 9;    // Define the pin connected to the servo motor (pin 9)
+
 // Define the time range during which the door should be open
-const int OPEN_HOUR = 9; // Define the hour when the door should open (9:00)
+const int OPEN_HOUR = 9;   // Define the hour when the door should open (9:00)
 const int CLOSE_HOUR = 17; // Define the hour when the door should close (17:00)
+door_open_degree = 90;     // (e.g., 90 degrees)
+door_close_degree = 0;     // (e.g., 0 degrees)
 
 // Create instances of the Servo
 Servo doorServo; // Create an instance of the Servo class for controlling the door servo motor
+
 
 // HUMIDITY CONTROL CONSTANTS
 #define DHT_PIN 2                // DHT22 sensor pin
@@ -58,23 +65,32 @@ Servo doorServo; // Create an instance of the Servo class for controlling the do
 #define FAN_OFF_TIME 600000      // 10 minutes off time then FAN_ON_TIME for interval time 
 #define INTERVAL_6H 21600000     // 6 hours
 #define INTERVAL_24H 86400000    // 24 hours
-DHT dht(DHT_PIN, DHT_TYPE);     // DHT sensor
-DHT dht2(DHT_PIN2, DHT_TYPE);  // Second DHT sensor
+DHT dht(DHT_PIN, DHT_TYPE);      // DHT sensor
+DHT dht2(DHT_PIN2, DHT_TYPE);    // Second DHT sensor
 unsigned long lastFanOnTime = 0; // Timestamp of the last time the fan was turned on
-bool fanOn = false;             // Flag to indicate if the fan should be turned on
+bool fanOn = false;              // Flag to indicate if the fan should be turned on
+
+humidity_loop_delay = 60000;     // Check humidity every minute when the fan is not active
 
 //FOOD/WATER DISPENSING CONSTANTS
-Servo foodServo;                  // create a servo object
-HX711_ADC foodWeightSensor;       // create a weight sensor object for food
-HX711_ADC waterWeightSensor;      // create a weight sensor object for water
-const int foodServoPin = 3;       // define the servo pin
-const int foodWeightSensorDT = 2; // define the data pin for food weight sensor
-const int foodWeightSensorSCK = 4;// define the clock pin for food weight sensor
-const int waterWeightSensorDT = 5;// define the data pin for water weight sensor
-const int waterWeightSensorSCK = 6;// define the clock pin for water weight sensor
-const int waterPumpPin = 7;       // define the pump pin
-const float foodAmount = 100.0;   // define the amount of food to dispense in grams
-const float waterAmount = 50.0;   // define the amount of water to dispense in ml
+
+int food_servo_start_position = 0;     // Move the servo to the starting position
+int food_servo_move_delay = 1000;      // Wait for the servo to move (milliseconds)
+int dispense_food_position = 90;       // Move the servo to dispense the food
+int food_servo_dispense_delay = 3000;  // how long to let the food dispense
+int water_pump_dispense_delay = 3000;  // how long to let the water dispense
+
+Servo foodServo;                    // create a servo object
+HX711_ADC foodWeightSensor;         // create a weight sensor object for food
+HX711_ADC waterWeightSensor;        // create a weight sensor object for water
+const int foodServoPin = 3;         // define the servo pin
+const int foodWeightSensorDT = 2;   // define the data pin for food weight sensor
+const int foodWeightSensorSCK = 4;  // define the clock pin for food weight sensor
+const int waterWeightSensorDT = 5;  // define the data pin for water weight sensor
+const int waterWeightSensorSCK = 6; // define the clock pin for water weight sensor
+const int waterPumpPin = 7;         // define the pump pin
+const float foodAmount = 100.0;     // define the amount of food to dispense in grams
+const float waterAmount = 50.0;     // define the amount of water to dispense in ml
 const float foodRemainingThreshold = 0.1;  // define the threshold for remaining food
 const float waterRemainingThreshold = 0.1; // define the threshold for remaining water
 
@@ -102,6 +118,10 @@ DallasTemperature temperatureSensor3(&oneWire3);
 // Define the temperature thresholds in Fahrenheit
 const float MIN_TEMP_F = 50.0;
 const float MAX_TEMP_F = 85.0;
+int temperature_reading_delay = 20000; // Delay for 20 second before taking another temperature reading
+
+int heater_on_time = 300000; // Delay for 5 minutes before turning on the heater
+int cooler_on_time = 300000; // Delay for 5 minutes before turning on the AC
 
 // Define the number of temperature readings to take over time to average
 const int NUM_READINGS = 10;
@@ -135,7 +155,8 @@ int egg_form_num = 0;
 int certain_egg_num = 24; // how many eggs to count before a text is sent and counter is reset
 int beam_interval_sleep = 300; // how many miliseconds the cpu will wait before checking the break beam again 
 HX711 scale(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
-float eggWeight = 0; //initialization *dont touch*
+float eggWeight = 0; // initialization *dont touch*
+int weigh_egg_after_detect_delay = 1000; // Delay before reading the weight of the egg
     
 // Objects
 TinyGsm modem(Serial1);
@@ -148,14 +169,13 @@ Twilio twilio(client, account_sid, auth_token);
 // Function to calculate the average light sensor reading over 5 minutes
 float readLightSensorAverage() {
     float sum = 0;
-    int samples = 30;
 
     // Take multiple light sensor readings and add them to the sum variable
     for (int i = 0; i < samples; i++) {
         sensors_event_t event;
         tsl.getEvent(&event);
         sum += event.light; // Use TSL2591 light sensor reading instead of analogRead
-        delay(100);
+        delay(200);
     }
     return sum / samples;
 }
@@ -174,7 +194,7 @@ void waitForNextMorning() {
         if (now.hour() == 5) {
             break;                             // If it's 5:00am, exit the loop
         }
-        delay(60000);                        // Check the time every minute (60000 milliseconds)
+        delay(wait_until_next_morning_loop_delay); 
     }
 }
 
@@ -202,61 +222,6 @@ void setupTSL2591() {
 
     tsl.setGain(TSL2591_GAIN_LOW);
     tsl.setTiming(TSL2591_INTEGRATIONTIME_100MS);
-}
-
-// Function to calculate the average light sensor reading over 5 minutes
-float readLightSensorAverage() {
-    float sum = 0;
-    int samples = 30;
-
-    // Take multiple light sensor readings and add them to the sum variable
-    for (int i = 0; i < samples; i++) {
-        sensors_event_t event;
-        tsl.getEvent(&event);
-        sum += event.light; // Use TSL2591 light sensor reading instead of analogRead
-        delay(100);
-    }
-
-    return sum / samples;
-}
-
-// Function to turn the light on for a specified duration
-void turnLightOn(unsigned long duration) {
-    digitalWrite(lightPin, HIGH);          // Set the light pin to HIGH, turning the light on
-    delay(duration);                       // Wait for the specified duration
-    digitalWrite(lightPin, LOW);           // Set the light pin to LOW, turning the light off
-}
-
-// Function to wait until it's 5:00am
-void waitForNextMorning() {
-    while (true) {
-        DateTime now = rtc.now();            // Get the current time from the RTC
-        if (now.hour() == 5) {
-            break;                             // If it's 5:00am, exit the loop
-        }
-        delay(60000);                        // Check the time every minute (60000 milliseconds)
-    }
-}
-
-// Function to initialize the TSL2591 light sensor
-void setupTSL2591() {
-    if (tsl.begin()) {
-        Serial.println("Found a TSL2591 sensor");
-    } else {
-        Serial.println("No TSL2591 sensor found ... check your connections");
-        while (1);
-    }
-
-    tsl.setGain(TSL2591_GAIN_LOW);
-    tsl.setTiming(TSL2591_INTEGRATIONTIME_100MS);
-}
-
-void Consistent_Light_Controller_setup() {
-    Serial.begin(9600);                    // Initialize serial communication at 9600 baud rate
-    pinMode(lightPin, OUTPUT);             // Set the light pin as output to control the light
-
-    setupRTC();                            // Call setupRTC function to initialize the RTC
-    setupTSL2591();                        // Call setupTSL2591 function to initialize the TSL2591 light sensor
 }
 
 void Consistent_Light_Controller_loop() {
@@ -338,8 +303,8 @@ unsigned long calculateTimeUntilOpen() {
     
 }
 void openDoor() {
-    // Set the servo position to the open state (e.g., 90 degrees)
-    doorServo.write(90);
+    // Set the servo position to the open state 
+    doorServo.write(door_open_degree);
 
     // Log the door opening event
     String data = "Door opened";
@@ -347,21 +312,12 @@ void openDoor() {
 }
 
 void closeDoor() {
-    // Set the servo position to the closed state (e.g., 0 degrees)
-    doorServo.write(0);
+    // Set the servo position to the closed state 
+    doorServo.write(door_close_degree);
 
     // Log the door closing event
     String data = "Door closed";
     insertIntoTable("data_logging", data);
-}
-
-void initializeServoAndRTC() {
-    doorServo.attach(SERVO_PIN); // Attach the servo motor instance to the specified pin (pin 9)
-
-    if (!rtc.begin()) {
-        // Handle RTC initialization error
-        while (1); // Halt the program, as the RTC is not functioning
-    }
 }
 
 void Coop_Door_Controller_setup() {
@@ -384,6 +340,7 @@ void Coop_Door_Controller_loop() {
         // Handle RTC error
     }
 }
+    
 ////////////////////////////////////// COOP DOOR CONTROLLER END //////////////////////////
 
 ////////////////////////////////////// COOP HUMIDITY START //////////////////////////
@@ -434,12 +391,11 @@ void Coop_Humidity_Control_setup() {
         fanOn = false;
         lastFanOnTime = getCurrentTimeMillis();
     } else {
-        delay(60000); // Check humidity every minute when the fan is not active
+        delay(humidity_loop_delay); 
     }
 }
 
 void Coop_Humidity_Control_loop() {
-    Serial.begin(9600);
     Wire.begin();
     dht.begin();
     dht2.begin();
@@ -460,8 +416,14 @@ float getWeight(WeightSensorType type) {
         case FOOD_SENSOR:
             if (foodWeightSensor.isReady()) {  // Check if the food weight sensor is ready
                 weight = foodWeightSensor.getData();  // Read the food weight
-                Serial.print("Food weight: ");
-            } else {
+                if (!weight > 0) {
+                    Serial.print("Food weight: ");
+                }
+                else {
+                    Serial.println("Error: Food weight sensor not ready");  // Error message
+                    break;
+                } 
+                else {
                 Serial.println("Error: Food weight sensor not ready");  // Error message
                 break;
             }
@@ -483,13 +445,15 @@ float getWeight(WeightSensorType type) {
 
     return weight;  // Return the measured weight
 }
-
+ 
+    
 void dispenseFood() {
     if (foodWeightSensor.isReady()) {
-        foodServo.write(0);                         // Move the servo to the starting position
-        delay(1000);                                // Wait for the servo to move
-        foodServo.write(90);                        // Move the servo to dispense the food
-        delay(1000);                                // Wait for the servo to move
+        foodServo.write(food_servo_start_position);                    
+        delay(food_servo_move_delay);                                
+        foodServo.write(dispense_food_position);                       
+        delay(food_servo_dispense_delay);     
+        foodServo.write(food_servo_start_position);                    
 
         float foodDispensed = foodWeightSensor.getWeight();
         String food_dispense_string= "Dispensed: ";
@@ -502,11 +466,11 @@ void dispenseFood() {
         Serial.println("Error: Food weight sensor not ready");
     }
 }
-
+    
 void dispenseWater() {
     if (waterWeightSensor.isReady()) {
         digitalWrite(waterPumpPin, HIGH);           // Turn on the water pump
-        delay(1000);                                // Wait for the water to dispense
+        delay(water_pump_dispense_delay);           // Wait for the water to dispense
         digitalWrite(waterPumpPin, LOW);            // Turn off the water pump
 
         float waterDispensed = waterWeightSensor.getWeight();  // Get the amount of water dispensed from the water weight sensor
@@ -531,7 +495,6 @@ void Dispense_Food_Water_setup() {
             Serial.println("Error: Failed to initialize water weight sensor");
         }
         pinMode(waterPumpPin, OUTPUT);              // set the pump pin as an output
-        Serial.begin(9600);
         createTable(food_table);  // Create the food_dispensing_log table
         createTable(water_table);
     }
@@ -574,7 +537,6 @@ void Egg_Detect_Weigh_Record_setup() {
     scale.tare(); // Reset the scale to 0
     pinMode(BREAK_BEAM_PIN, INPUT_PULLUP);
 
-    Serial.begin(9600);
     Serial.println("Initialization complete.");
     // Create a table
     String tableName = "egg_table";
@@ -589,9 +551,8 @@ void Egg_Detect_Weigh_Record_loop() {
         egg++;
         //Global egg counter to ensure total number of eggs in form is accurate
         egg_form_num++;
-
-        // Read the weight of the egg after 1 second
-        delay(1000);
+        // read the weight after a delay 
+        delay(weigh_egg_after_detect_delay);
         eggWeight = scale.get_units(); // Get the weight in units (e.g., grams)
         //egg weight is unusual
         if (eggWeight <= 25 and eggWeight >= 150) {
@@ -626,8 +587,6 @@ void Egg_Detect_Weigh_Record_loop() {
     
 ////////////////////////////////////// HEAT/COOL TEMP CONTROLLER START ////////////////////////////////////
 void temperature_setup() {
-    Serial.begin(9600);
-
     // Start the temperature sensors
     temperatureSensor1.begin();
     temperatureSensor2.begin();
@@ -666,7 +625,7 @@ float getTemperatureF(int numReadings, DallasTemperature &sensor, int sensorNum)
         }
 
         // Delay for a short time before taking another temperature reading
-        delay(10);
+        delay(50);
     }
 
     // Print an error message to the database if there was an error reading the temperature
@@ -695,13 +654,14 @@ void checkTemperature(float temperatureF) {
     else if (temperatureF < MIN_TEMP_F) {
         Serial.println("Temperature is too low!");
         // TODO: Turn on the heater to warm up the chicken coop.
-        delay(300000); // Delay for 5 minutes before turning on the heater
+        delay(heater_on_time); 
     }
 // Check if the temperature is too high
     else if (temperatureF > MAX_TEMP_F) {
         Serial.println("Temperature is too high!");
         // TODO: Turn on the AC to cool down the chicken coop.
-        delay(300000); // Delay for 5 minutes before turning on the AC
+        delay(cooler_on_time); // Delay for 5 minutes before turning on the AC
+        
     }
 }
 
@@ -722,7 +682,7 @@ void temperature_loop() {
     //logs only occassanily (delay*val equality check, (180 times of 20 second delay= 3600 seconds= 1 hour ))
     if (val == 180) {
 
-        String tableName = 'temperature_log';
+        String tableName = "temperature_log";
         // Get the current date and time as a string
 
         String data = "Temperature: ";
@@ -731,15 +691,13 @@ void temperature_loop() {
 
         insertIntoTable(tableName,data);
 
-        //reset count for ~1 hour
-        val=0;
+        //reset count every ~1 hour
+        val= 0;
     }
     else {
         val++;
     }
-    // Delay for 20 second before taking another temperature reading
-    delay(100);
-
+    delay(temperature_reading_delay); 
 }
 
 //////////////////////////////////////////  HEAT/COOL TEMP CONTROLLER END ////////////////////////////////////
@@ -747,7 +705,8 @@ void temperature_loop() {
 
 // Call the setup functions for all 4 components
 void setup() {
-    Consistent_Light_Controller_setup();
+    Serial.begin(9600);
+    Consistent_Light_Controller_setup(); //includes RTC setup
     Coop_Door_Controller_setup();
     Dispense_Food_Water_setup();
     Coop_Humidity_Control_setup();
