@@ -7,7 +7,7 @@ The `All_in_One_Main.cpp` is a compilation of the various separate files represe
 # Items Required: 
 1. Arduino Mega 2560: $38.00 (estimated, price may vary)
 2. Adafruit Motor Shield v2 (1): $22.50
-3. Linear actuator or a servo motor with a gear system for opening and closing the door: $30.00 (estimated)
+3. Linear actuator or a servo motor with a gear system for opening and closing the door: $30.00 
 4. IoT Power Relay: $30.00 (estimated)
 5. Load Cell (1): $9.99
 6. Jumper Wires - Assorted: $9.99
