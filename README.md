@@ -48,11 +48,10 @@ The `All_in_One_Main.cpp` is a compilation of the various separate files represe
 To embark on your exciting journey with the Arduino-Powered Chicken Coop project, follow these steps:
 
 1. Clone this repository to your local machine.
-2. Install the necessary Arduino libraries and dependencies.
-3. Customize the settings in each file to suit your specific coop requirements.
-5. Upload the code, no folders, to your Arduino-compatible board.
-6. Connect the required sensors, components, etc to your board.
-7. Power on your Arduino board and enjoy!
+2. Customize the settings in each file to suit your specific coop requirements.
+3. Upload the code, no folders, to your Arduino-compatible board.
+4. Connect the required sensors, components, etc to your board.
+5. Power on your Arduino board and enjoy!
 
 ## 💡 Contributing
 
