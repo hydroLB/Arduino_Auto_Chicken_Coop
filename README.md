@@ -2,7 +2,7 @@
 
 Welcome to the Arduino-Powered automatic Chicken Coop project! This project is perfect for hobbyists and small-scale farmers who want to ensure their chickens receive the best care and living conditions possible while inputting minimal continued effort into raising them. Our Arduino-based system offers an affordable and efficient way to manage your chicken coop, leading to happier chickens and a more enjoyable experience for you.
 
-The `main.cpp` is a compilation of the various seperate files representing the chicken coop. Makes it easier to upload to the Arduino. 
+The `All_in_One_Main.cpp` is a compilation of the various separate files representing the chicken coop all together as a single file. Makes it easier to upload to the Arduino. 
 
 # Items Required: 
 1. Arduino Mega 2560: $38.00 (estimated, price may vary)
