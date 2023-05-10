@@ -21,14 +21,15 @@
 #include "table_generator.h"
 
 
-
+////IDE SPECIFIC (CAN BE REMOVED)////
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "LoopDoesntUseConditionVariableInspection"
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
 #pragma ide diagnostic ignored "UnusedLocalVariable"
-#VARIABLES (to be modified to values suited to the user):
+/////////////////////////////////////
 
+#VARIABLES (to be modified to values suited to the user):
 // LIGHT CONTROLLER CONSTANTS
 const int sunlightThreshold = 50;   // Define the sunlight threshold value
 const int lightPin = 13;            // Assign the digital pin 13 to the light (relay or LED)
