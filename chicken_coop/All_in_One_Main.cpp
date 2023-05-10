@@ -29,34 +29,36 @@
 #pragma ide diagnostic ignored "UnusedLocalVariable"
 /////////////////////////////////////
 
-#VARIABLES (to be modified to values suited to the user):
-// LIGHT CONTROLLER CONSTANTS
+// VARIABLES (to be modified to values suited to the user):
+
+// LIGHT CONTROLLER VARIABLES AND CONSTANTS
+
 const int sunlightThreshold = 50;   // Define the sunlight threshold value
+int samples = 30; // how many light samples to average before checking it against threshold
 const int lightPin = 13;            // Assign the digital pin 13 to the light (relay or LED)
 const int interval = 300000;        // 5 minutes in milliseconds for sampling interval
 const long sixteenHours = 57600000; // 16 hours in milliseconds for total desired light duration
-// LIGHT CONTROLLER VARIABLES
+int wait_until_next_morning_loop_delay = 60000;  // Check the time every minute (60000 milliseconds)
+
+
 unsigned long startTime;            // initialization *dont touch*
 unsigned long lightOnTime;          // initialization *dont touch*
 boolean lightOn = false;            // default is false
-
-wait_until_next_morning_loop_delay = 60000;  // Check the time every minute (60000 milliseconds)
-int samples = 30; // how many light samples to average before checking it against threshold
 
 // Objects
 RTC_DS1307 rtc; // Create RTC object for real-time clock for all of them //initialization *dont touch*
 Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591); // Create light sensor object 
 
-//DOOR CONTROLLER CONSTANTS
+//DOOR CONTROLLER VARIABLES AND CONSTANTS
 
 // Define the pin used to control the servo motor
-const int SERVO_PIN = 9;    // Define the pin connected to the servo motor (pin 9)
+const int SERVO_PIN = 9;   // Define the pin connected to the servo motor (pin 9)
 
 // Define the time range during which the door should be open
 const int OPEN_HOUR = 9;   // Define the hour when the door should open (9:00)
 const int CLOSE_HOUR = 17; // Define the hour when the door should close (17:00)
-door_open_degree = 90;     // (e.g., 90 degrees)
-door_close_degree = 0;     // (e.g., 0 degrees)
+int door_open_degree = 90;     // (e.g., 90 degrees)
+int door_close_degree = 0;     // (e.g., 0 degrees)
 
 // Create instances of the Servo
 Servo doorServo; // Create an instance of the Servo class for controlling the door servo motor
@@ -76,9 +78,9 @@ DHT dht2(DHT_PIN2, DHT_TYPE);    // Second DHT sensor
 unsigned long lastFanOnTime = 0; // Timestamp of the last time the fan was turned on
 bool fanOn = false;              // Flag to indicate if the fan should be turned on
 
-humidity_loop_delay = 60000;     // Check humidity every minute when the fan is not active
+int humidity_loop_delay = 60000;     // Check humidity every minute when the fan is not active
 
-//FOOD/WATER DISPENSING CONSTANTS
+//FOOD+WATER DISPENSING VARIABLES AND CONSTANTS
 
 int food_servo_start_position = 0;     // Move the servo to the starting position
 int food_servo_move_delay = 1000;      // Wait for the servo to move (milliseconds)
@@ -108,7 +110,8 @@ enum WeightSensorType {
     WATER_SENSOR
 };
 
-//TEMPERATURE CONTROL
+//TEMPERATURE CONTROL VARIABLES AND CONSTANTS
+
 // Define the digital input pins for the temperature sensors
 const int TEMPERATURE_SENSOR_1_PIN = 2;
 const int TEMPERATURE_SENSOR_2_PIN = 3;
