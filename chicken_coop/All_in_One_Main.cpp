@@ -715,8 +715,9 @@ void temperature_loop() {
 //////////////////////////////////////////  HEAT/COOL TEMP CONTROLLER END ////////////////////////////////////
 
 
-// Call the setup functions for all 4 components
+// Call the setup functions for each piece of the coop
 void setup() {
+    //for communication
     Serial.begin(9600);
     Consistent_Light_Controller_setup(); //includes RTC setup
     Coop_Door_Controller_setup();
@@ -727,7 +728,7 @@ void setup() {
     
 }
 
-// Call the loop functions for all 4 components
+// Call the loop functions for each piece of the coop
 void loop() {
     Consistent_Light_Controller_loop();
     Coop_Door_Controller_loop();
